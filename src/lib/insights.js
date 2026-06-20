@@ -59,6 +59,42 @@ export function weakestPhases(phaseMetrics, limit = 3) {
     .slice(0, limit)
 }
 
+// Per-day solve counts for the trailing `days` window, oldest -> newest.
+export function dailySeries(byDate, days) {
+  const today = todayStr()
+  const out = []
+  for (let i = days - 1; i >= 0; i--) {
+    const date = addDays(today, -i)
+    out.push({ date, count: byDate[date] || 0 })
+  }
+  return out
+}
+
+// This week vs. the previous week, with a percentage delta.
+export function weekDelta(byDate) {
+  const thisWeek = recentCount(byDate, 7)
+  const prevWeek = recentCount(byDate, 14) - thisWeek
+  let pct = 0
+  if (prevWeek > 0) pct = Math.round(((thisWeek - prevWeek) / prevWeek) * 100)
+  else if (thisWeek > 0) pct = 100
+  return { thisWeek, prevWeek, pct, up: thisWeek >= prevWeek }
+}
+
+// Most recently solved real problems, newest first (derived live from done state).
+export function recentlySolved(slots, state, limit = 6) {
+  const out = []
+  for (const slot of slots) {
+    for (let k = 0; k < slot.items.length; k++) {
+      const it = slot.items[k]
+      if (isPseudo(it[0])) continue
+      const r = state.done[probId(slot, k)]
+      if (r && r.done) out.push({ title: it[0], source: it[1], diff: it[2], slug: it[3], date: r.doneDate || '' })
+    }
+  }
+  out.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
+  return out.slice(0, limit)
+}
+
 // The next handful of unsolved, real (linkable) problems in plan order.
 export function nextUp(slots, state, limit = 5) {
   const out = []

@@ -9,6 +9,8 @@ import PhaseBars from './PhaseBars.jsx'
 import StatStrip from './StatStrip.jsx'
 import NextUp from './NextUp.jsx'
 import FocusAndDifficulty from './FocusAndDifficulty.jsx'
+import Momentum from './Momentum.jsx'
+import RecentActivity from './RecentActivity.jsx'
 
 function paceInfo(m) {
   const targetFrac = (m.todayIdx + 1) / m.totalDays
@@ -83,6 +85,11 @@ export default function Dashboard({ metrics, startDate, slots, state, onGoToPlan
       </div>
 
       <StatStrip metrics={metrics} startDate={startDate} />
+
+      <div className="grid2">
+        <Momentum metrics={metrics} />
+        <RecentActivity slots={slots} state={state} />
+      </div>
 
       <div className="grid2">
         <NextUp slots={slots} state={state} onGoToPlan={onGoToPlan} />
