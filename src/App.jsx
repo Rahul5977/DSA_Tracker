@@ -5,7 +5,6 @@ import TopBar from './components/TopBar.jsx'
 import Dashboard from './components/Dashboard.jsx'
 import PlanView from './components/PlanView.jsx'
 import Contests from './components/Contests.jsx'
-import Deploy from './components/Deploy.jsx'
 import Onboarding from './components/Onboarding.jsx'
 
 export default function App() {
@@ -56,7 +55,6 @@ export default function App() {
         )}
         {view === 'plan' && <PlanView slots={slots} state={state} actions={actions} toast={toast} />}
         {view === 'contests' && <Contests contests={state.contests} actions={actions} toast={toast} />}
-        {view === 'deploy' && <Deploy state={state} actions={actions} toast={toast} />}
       </main>
 
       <footer>

@@ -4,7 +4,6 @@ const TABS = [
   ['dash', 'Dashboard'],
   ['plan', 'The Plan'],
   ['contests', 'Contests'],
-  ['deploy', 'Deploy'],
 ]
 
 export default function TopBar({ view, setView, metrics }) {
