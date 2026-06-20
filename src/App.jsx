@@ -6,6 +6,7 @@ import Dashboard from './components/Dashboard.jsx'
 import PlanView from './components/PlanView.jsx'
 import Contests from './components/Contests.jsx'
 import Deploy from './components/Deploy.jsx'
+import Onboarding from './components/Onboarding.jsx'
 
 export default function App() {
   const tracker = useTracker()
@@ -31,6 +32,10 @@ export default function App() {
 
   return (
     <>
+      {!state.onboarded && (
+        <Onboarding totalDays={metrics.totalDays} onConfirm={(d) => { actions.completeOnboarding(d); setView('plan') }} />
+      )}
+
       <TopBar view={view} setView={setView} metrics={metrics} />
       <main>
         {!HAS_LS && (

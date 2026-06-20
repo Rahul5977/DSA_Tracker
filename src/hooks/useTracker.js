@@ -13,6 +13,7 @@ export function defaultState() {
     open: {},      // dayKey -> bool
     custom: {},    // dayKey -> [ [t,src,diff,slug], ... ]   (user-added problems)
     contests: [],  // [{ name, date, solved, rank, rating, note }]
+    onboarded: false, // has the user picked their Day 1 yet?
   }
 }
 
@@ -21,8 +22,10 @@ function hydrate() {
   const base = defaultState()
   if (saved && typeof saved === 'object') {
     for (const k of Object.keys(saved)) base[k] = saved[k]
-  } else if (!saved) {
-    // brand-new user: open the first day for them
+    // existing users (saved before onboarding existed) shouldn't be re-prompted
+    if (saved.onboarded === undefined) base.onboarded = true
+  } else {
+    // brand-new user: open the first day for them; ask for Day 1 first
     base.open['0:p0'] = true
   }
   return base
@@ -120,6 +123,10 @@ export function useTracker() {
     setState((s) => ({ ...s, startDate: date }))
   }, [])
 
+  const completeOnboarding = useCallback((date) => {
+    setState((s) => ({ ...s, startDate: date || s.startDate, onboarded: true }))
+  }, [])
+
   // --- contests ---------------------------------------------------------
   const addContest = useCallback((c) => {
     setState((s) => ({ ...s, contests: [...s.contests, c] }))
@@ -141,7 +148,7 @@ export function useTracker() {
   return {
     state, slots, metrics,
     toggleProblem, toggleDayOpen, setAllOpen, setNote,
-    addCustomProblem, addBuffer, carryOver, setStartDate,
+    addCustomProblem, addBuffer, carryOver, setStartDate, completeOnboarding,
     addContest, removeContest, importState, resetAll,
   }
 }
