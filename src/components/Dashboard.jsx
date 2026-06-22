@@ -48,6 +48,7 @@ const SUBJECT_COLORS = {
   dbms: 'var(--peri)',
   cn: 'var(--rose)',
   oop: 'var(--mint-soft)',
+  lld: 'var(--peri-soft)',
 }
 
 function SubjectChip({ name, color, solved, total }) {
@@ -67,7 +68,7 @@ function SubjectChip({ name, color, solved, total }) {
 
 function SubjectsStrip({ dsa, theoryMetrics, onGoToCombined }) {
   const bs = theoryMetrics && theoryMetrics.bySubject ? theoryMetrics.bySubject : {}
-  const theorySubjects = ['os', 'dbms', 'cn', 'oop']
+  const theorySubjects = ['os', 'dbms', 'cn', 'oop', 'lld']
   return (
     <div className="panel subjects-panel">
       <div className="cardhead">

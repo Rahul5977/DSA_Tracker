@@ -8,6 +8,8 @@ function Concept({ concept, isDone, onToggle }) {
   const paras = (concept.explanation || '').split('\n\n').filter((p) => p.trim())
   const keyPoints = concept.keyPoints || []
   const links = concept.links || []
+  const videos = concept.videos || []
+  const diagram = concept.diagram || ''
   const interview = concept.interview || []
 
   return (
@@ -34,6 +36,13 @@ function Concept({ concept, isDone, onToggle }) {
             <p key={i} className="concept-para">{p}</p>
           ))}
 
+          {diagram && (
+            <div className="concept-diagram-wrap">
+              <div className="concept-diagram-label">▦ Diagram</div>
+              <pre className="concept-diagram">{diagram}</pre>
+            </div>
+          )}
+
           {keyPoints.length > 0 && (
             <ul className="concept-keys">
               {keyPoints.map((kp, i) => (
@@ -42,11 +51,25 @@ function Concept({ concept, isDone, onToggle }) {
             </ul>
           )}
 
+          {videos.length > 0 && (
+            <div className="concept-media">
+              <div className="concept-media-label">📺 Watch</div>
+              <div className="concept-links">
+                {videos.map((v, i) => (
+                  <a key={i} href={v.url} target="_blank" rel="noreferrer" className="concept-link vid">▶ {v.label}</a>
+                ))}
+              </div>
+            </div>
+          )}
+
           {links.length > 0 && (
-            <div className="concept-links">
-              {links.map((l, i) => (
-                <a key={i} href={l.url} target="_blank" rel="noreferrer" className="concept-link">↗ {l.label}</a>
-              ))}
+            <div className="concept-media">
+              <div className="concept-media-label">📖 Read</div>
+              <div className="concept-links">
+                {links.map((l, i) => (
+                  <a key={i} href={l.url} target="_blank" rel="noreferrer" className="concept-link">↗ {l.label}</a>
+                ))}
+              </div>
             </div>
           )}
 

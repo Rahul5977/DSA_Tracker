@@ -9,7 +9,7 @@ import TheoryView from './components/TheoryView.jsx'
 import Contests from './components/Contests.jsx'
 import Onboarding from './components/Onboarding.jsx'
 
-const THEORY_KEYS = ['os', 'dbms', 'cn', 'oop']
+const THEORY_KEYS = ['os', 'dbms', 'cn', 'oop', 'lld']
 
 export default function App() {
   const tracker = useTracker()

@@ -4,12 +4,13 @@
 // A subject module exports SUBJECT ({ key, name, tag }) and DAYS
 // ([ { focus, concepts: [...] }, ... ]).
 
-import * as os from './os.js' // NOTE: os.js is created by the orchestrator later — imported anyway.
+import * as os from './os.js'
 import * as dbms from './dbms.js'
 import * as cn from './cn.js'
 import * as oop from './oop.js'
+import * as lld from './lld.js'
 
-const MODULES = [os, dbms, cn, oop]
+const MODULES = [os, dbms, cn, oop, lld]
 
 export const SUBJECTS = MODULES.map((m) => ({ ...m.SUBJECT, days: m.DAYS }))
 

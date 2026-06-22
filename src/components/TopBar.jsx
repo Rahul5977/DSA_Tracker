@@ -8,6 +8,7 @@ const TABS = [
   ['dbms', 'DBMS'],
   ['cn', 'CN'],
   ['oop', 'OOP'],
+  ['lld', 'LLD'],
   ['contests', 'Contests'],
 ]
 
