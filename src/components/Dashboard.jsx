@@ -50,7 +50,7 @@ export default function Dashboard({ metrics, startDate, slots, state, onGoToPlan
   return (
     <section className="view">
       <div className="eyebrow">Mission Control</div>
-      <h2 className="section">Where you stand, Rahul.</h2>
+      <h2 className="section">Where you stand, Teesha and Rahul.</h2>
       <p className="lede">Every problem you check off updates the ring, the pace line, and the streak grid below. Stay above the target pace and you reach the summit on schedule.</p>
 
       <div className="hero">

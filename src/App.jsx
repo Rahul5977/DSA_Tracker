@@ -58,7 +58,7 @@ export default function App() {
       </main>
 
       <footer>
-        Built for <b>Rahul Raj</b> · Core curriculum cross-mapped to <b>LeetCode</b> &amp; <b>GeeksforGeeks</b> · <b>Day 1 = your start date</b> · Good luck on the climb. 🏔
+        Built for <b>Teesha and Rahul</b> · Core curriculum cross-mapped to <b>LeetCode</b> &amp; <b>GeeksforGeeks</b> · <b>Day 1 = your start date</b> · Good luck on the climb. 🏔
       </footer>
 
       <div id="toast" className={toastMsg ? 'show' : ''}>{toastMsg}</div>
