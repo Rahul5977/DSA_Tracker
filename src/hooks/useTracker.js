@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { PLAN } from '../data/plan.js'
 import { loadState, saveState } from '../lib/storage.js'
 import { buildSlots, computeMetrics, dayKey, probId } from '../lib/model.js'
+import { SUBJECTS } from '../data/theory/index.js'
+import { buildTheorySlots, computeTheoryMetrics, conceptId, theoryDayKey } from '../lib/theoryModel.js'
 import { todayStr } from '../lib/dates.js'
 
 export function defaultState() {
@@ -14,6 +16,11 @@ export function defaultState() {
     custom: {},    // dayKey -> [ [t,src,diff,slug], ... ]   (user-added problems)
     contests: [],  // [{ name, date, solved, rank, rating, note }]
     onboarded: false, // has the user picked their Day 1 yet?
+    theory: {        // parallel CS-theory tracking (OS, DBMS, CN, OOP)
+      done: {},      // conceptId -> { done:true, doneDate:"YYYY-MM-DD" }
+      notes: {},     // theoryDayKey -> string
+      open: {},      // theoryDayKey -> bool
+    },
   }
 }
 
@@ -28,6 +35,8 @@ function hydrate() {
     // brand-new user: open the first day for them; ask for Day 1 first
     base.open['0:p0'] = true
   }
+  // existing DSA users may have saved state before theory existed
+  if (!base.theory) base.theory = { done: {}, notes: {}, open: {} }
   return base
 }
 
@@ -44,6 +53,12 @@ export function useTracker() {
 
   const slots = useMemo(() => buildSlots(PLAN, state), [state])
   const metrics = useMemo(() => computeMetrics(PLAN, state, slots), [state, slots])
+
+  const theorySlots = useMemo(() => buildTheorySlots(SUBJECTS), [])
+  const theoryMetrics = useMemo(
+    () => computeTheoryMetrics(SUBJECTS, state.theory, theorySlots, state.startDate),
+    [state, theorySlots],
+  )
 
   // --- mutators ---------------------------------------------------------
   const toggleProblem = useCallback((slot, k) => {
@@ -72,6 +87,34 @@ export function useTracker() {
   const setNote = useCallback((slot, value) => {
     const key = dayKey(slot)
     setState((s) => ({ ...s, notes: { ...s.notes, [key]: value } }))
+  }, [])
+
+  // --- theory mutators --------------------------------------------------
+  const toggleConcept = useCallback((conceptId) => {
+    setState((s) => {
+      const done = { ...s.theory.done }
+      if (done[conceptId] && done[conceptId].done) delete done[conceptId]
+      else done[conceptId] = { done: true, doneDate: todayStr() }
+      return { ...s, theory: { ...s.theory, done } }
+    })
+  }, [])
+
+  const toggleTheoryDayOpen = useCallback((slot) => {
+    const key = theoryDayKey(slot)
+    setState((s) => ({ ...s, theory: { ...s.theory, open: { ...s.theory.open, [key]: !s.theory.open[key] } } }))
+  }, [])
+
+  const setAllTheoryOpen = useCallback((isOpen) => {
+    setState((s) => {
+      const open = {}
+      buildTheorySlots(SUBJECTS).forEach((sl) => { open[theoryDayKey(sl)] = isOpen })
+      return { ...s, theory: { ...s.theory, open } }
+    })
+  }, [])
+
+  const setTheoryNote = useCallback((slot, value) => {
+    const key = theoryDayKey(slot)
+    setState((s) => ({ ...s, theory: { ...s.theory, notes: { ...s.theory.notes, [key]: value } } }))
   }, [])
 
   const addCustomProblem = useCallback((slot, title) => {
@@ -150,5 +193,7 @@ export function useTracker() {
     toggleProblem, toggleDayOpen, setAllOpen, setNote,
     addCustomProblem, addBuffer, carryOver, setStartDate, completeOnboarding,
     addContest, removeContest, importState, resetAll,
+    theorySlots, theoryMetrics,
+    toggleConcept, toggleTheoryDayOpen, setAllTheoryOpen, setTheoryNote,
   }
 }

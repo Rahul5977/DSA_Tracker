@@ -2,7 +2,12 @@ import { fmt, todayStr } from '../lib/dates.js'
 
 const TABS = [
   ['dash', 'Dashboard'],
-  ['plan', 'The Plan'],
+  ['combined', 'Combined'],
+  ['dsa', 'DSA'],
+  ['os', 'OS'],
+  ['dbms', 'DBMS'],
+  ['cn', 'CN'],
+  ['oop', 'OOP'],
   ['contests', 'Contests'],
 ]
 

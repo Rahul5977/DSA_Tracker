@@ -42,16 +42,67 @@ function projection(m, startDate) {
   }
 }
 
-export default function Dashboard({ metrics, startDate, slots, state, onGoToPlan }) {
+const SUBJECT_COLORS = {
+  dsa: 'var(--amber)',
+  os: 'var(--mint)',
+  dbms: 'var(--peri)',
+  cn: 'var(--rose)',
+  oop: 'var(--mint-soft)',
+}
+
+function SubjectChip({ name, color, solved, total }) {
+  const frac = total ? solved / total : 0
+  const pct = Math.round(frac * 100)
+  return (
+    <div className="subj-chip">
+      <div className="subj-chip-top">
+        <span className="subj-chip-name">{name}</span>
+        <span className="subj-chip-pct mono" style={{ color }}>{pct}%</span>
+      </div>
+      <div className="subj-chip-bar"><i style={{ width: `${pct}%`, background: color }} /></div>
+      <div className="subj-chip-count mono">{solved} / {total}</div>
+    </div>
+  )
+}
+
+function SubjectsStrip({ dsa, theoryMetrics, onGoToCombined }) {
+  const bs = theoryMetrics && theoryMetrics.bySubject ? theoryMetrics.bySubject : {}
+  const theorySubjects = ['os', 'dbms', 'cn', 'oop']
+  return (
+    <div className="panel subjects-panel">
+      <div className="cardhead">
+        <h3>Subjects</h3>
+        {onGoToCombined && (
+          <button className="tbtn" onClick={onGoToCombined}>Open Combined plan →</button>
+        )}
+      </div>
+      <div className="subjects-strip">
+        {dsa && (
+          <SubjectChip name="DSA" color={SUBJECT_COLORS.dsa} solved={dsa.solved} total={dsa.total} />
+        )}
+        {theorySubjects.map((k) => {
+          const s = bs[k]
+          if (!s) return null
+          return <SubjectChip key={k} name={s.name} color={SUBJECT_COLORS[k] || 'var(--peri)'} solved={s.solved} total={s.total} />
+        })}
+      </div>
+    </div>
+  )
+}
+
+export default function Dashboard({ metrics, dsaMetrics, theoryMetrics, startDate, slots, state, onGoToPlan, onGoToCombined }) {
   const pct = metrics.total ? metrics.solved / metrics.total : 0
   const pace = paceInfo(metrics)
   const proj = projection(metrics, startDate)
+  const dsaSummary = dsaMetrics || metrics
 
   return (
     <section className="view">
       <div className="eyebrow">Mission Control</div>
       <h2 className="section">Where you stand, Teesha and Rahul.</h2>
       <p className="lede">Every problem you check off updates the ring, the pace line, and the streak grid below. Stay above the target pace and you reach the summit on schedule.</p>
+
+      <SubjectsStrip dsa={dsaSummary} theoryMetrics={theoryMetrics} onGoToCombined={onGoToCombined} />
 
       <div className="hero">
         <div className="panel">

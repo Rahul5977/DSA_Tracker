@@ -4,12 +4,16 @@ import { HAS_LS } from './lib/storage.js'
 import TopBar from './components/TopBar.jsx'
 import Dashboard from './components/Dashboard.jsx'
 import PlanView from './components/PlanView.jsx'
+import CombinedView from './components/CombinedView.jsx'
+import TheoryView from './components/TheoryView.jsx'
 import Contests from './components/Contests.jsx'
 import Onboarding from './components/Onboarding.jsx'
 
+const THEORY_KEYS = ['os', 'dbms', 'cn', 'oop']
+
 export default function App() {
   const tracker = useTracker()
-  const { state, slots, metrics } = tracker
+  const { state, slots, metrics, theorySlots, theoryMetrics } = tracker
   const [view, setViewRaw] = useState('dash')
 
   const setView = useCallback((v) => {
@@ -32,7 +36,7 @@ export default function App() {
   return (
     <>
       {!state.onboarded && (
-        <Onboarding totalDays={metrics.totalDays} onConfirm={(d) => { actions.completeOnboarding(d); setView('plan') }} />
+        <Onboarding totalDays={metrics.totalDays} onConfirm={(d) => { actions.completeOnboarding(d); setView('combined') }} />
       )}
 
       <TopBar view={view} setView={setView} metrics={metrics} />
@@ -47,18 +51,35 @@ export default function App() {
         {view === 'dash' && (
           <Dashboard
             metrics={metrics}
+            dsaMetrics={metrics}
+            theoryMetrics={theoryMetrics}
             startDate={state.startDate}
             slots={slots}
             state={state}
-            onGoToPlan={() => setView('plan')}
+            onGoToPlan={() => setView('dsa')}
+            onGoToCombined={() => setView('combined')}
           />
         )}
-        {view === 'plan' && <PlanView slots={slots} state={state} actions={actions} toast={toast} />}
+        {view === 'combined' && (
+          <CombinedView dsaSlots={slots} theorySlots={theorySlots} state={state} actions={actions} toast={toast} />
+        )}
+        {view === 'dsa' && <PlanView slots={slots} state={state} actions={actions} toast={toast} />}
+        {THEORY_KEYS.includes(view) && (
+          <TheoryView
+            key={view}
+            subjectKey={view}
+            slots={theorySlots}
+            state={state}
+            theoryMetrics={theoryMetrics}
+            actions={actions}
+            toast={toast}
+          />
+        )}
         {view === 'contests' && <Contests contests={state.contests} actions={actions} toast={toast} />}
       </main>
 
       <footer>
-        Built for <b>Teesha and Rahul</b> · Core curriculum cross-mapped to <b>LeetCode</b> &amp; <b>GeeksforGeeks</b> · <b>Day 1 = your start date</b> · Good luck on the climb. 🏔
+        Built for <b>Teesha and Rahul</b> · DSA cross-mapped to <b>LeetCode</b> &amp; <b>GeeksforGeeks</b> · CS theory: <b>OS</b> · DBMS · CN · OOP · <b>Day 1 = your start date</b> · Good luck on the climb. 🏔
       </footer>
 
       <div id="toast" className={toastMsg ? 'show' : ''}>{toastMsg}</div>

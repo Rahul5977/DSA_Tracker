@@ -59,8 +59,8 @@ input,textarea,select{font-family:inherit}
 }
 .brand h1{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;letter-spacing:-.02em;line-height:1}
 .brand span{font-size:11px;color:var(--txt-dim);letter-spacing:.14em;text-transform:uppercase}
-nav.tabs{display:flex;gap:4px;margin-left:8px}
-nav.tabs button{padding:8px 15px;border-radius:9px;font-size:13.5px;font-weight:500;color:var(--txt-dim);transition:.16s;letter-spacing:.01em}
+nav.tabs{display:flex;gap:4px;margin-left:8px;flex-wrap:wrap}
+nav.tabs button{padding:8px 13px;border-radius:9px;font-size:13.5px;font-weight:500;color:var(--txt-dim);transition:.16s;letter-spacing:.01em;white-space:nowrap}
 nav.tabs button:hover{color:var(--txt);background:var(--ink-3)}
 nav.tabs button.on{color:var(--ink);background:var(--amber);font-weight:600}
 .topbar .spacer{flex:1}
@@ -271,6 +271,86 @@ code{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--ink-
 
 footer{text-align:center;padding:30px;color:var(--txt-faint);font-size:12px;border-top:1px solid var(--line)}
 footer b{color:var(--txt-dim)}
+
+/* ===== Theory / Concepts / Combined ===== */
+
+/* subject name badge (theory day header) */
+.subj-badge{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(138,155,255,.16);color:var(--peri-soft);padding:2px 7px;border-radius:5px;border:1px solid rgba(138,155,255,.28);margin-right:8px;vertical-align:middle}
+.soon-pill{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;background:var(--ink-3);color:var(--txt-faint);padding:2px 7px;border-radius:5px;text-transform:uppercase;border:1px solid var(--line-2)}
+
+/* "coming soon" placeholder */
+.day.concept-day.stub{border-style:dashed;border-color:var(--line-2)}
+.day.concept-day.stub .daynum{color:var(--peri-soft)}
+.soon-line{font-size:13px;color:var(--txt-dim);padding:12px 6px 4px}
+.soon-line b{color:var(--txt)}
+
+/* concept cards inside an open theory day */
+.concept{background:var(--ink);border:1px solid var(--line);border-radius:10px;margin:8px 0;overflow:hidden;transition:border-color .18s}
+.concept.open{border-color:var(--line-2)}
+.concept.solved{border-color:rgba(66,226,160,.32)}
+.concept-head{display:flex;align-items:flex-start;gap:12px;padding:11px 12px}
+.concept-head .concept-info{flex:1;min-width:0;cursor:pointer}
+.concept-topic{font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+.concept.solved .concept-topic{color:var(--txt-dim)}
+.concept-summary{font-size:12px;color:var(--txt-dim);margin-top:2px}
+.concept-head .chev{cursor:pointer;align-self:center}
+.concept.open .concept-head .chev{transform:rotate(180deg)}
+
+.concept-body{padding:2px 14px 14px 14px;border-top:1px solid var(--line)}
+.concept-para{font-size:13px;color:var(--txt-dim);margin-top:10px;line-height:1.6}
+.concept-keys{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.concept-keys li{font-size:12.5px;color:var(--txt);padding-left:18px;position:relative;line-height:1.5}
+.concept-keys li::before{content:'▸';position:absolute;left:0;color:var(--amber);font-size:11px}
+.concept-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.concept-link{font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:7px;background:var(--ink-3);border:1px solid var(--line-2);color:var(--peri-soft);transition:.15s}
+.concept-link:hover{border-color:var(--peri);color:var(--peri)}
+
+/* interview Q&A accordion */
+.qa{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.qa-title{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+.qa-item{border:1px solid var(--line);border-radius:8px;margin-bottom:6px;overflow:hidden;background:var(--ink-2)}
+.qa-item.open{border-color:var(--line-2)}
+.qa-q{display:flex;gap:9px;align-items:flex-start;width:100%;text-align:left;padding:9px 11px;font-size:12.5px;font-weight:600;color:var(--txt)}
+.qa-q:hover{background:var(--ink-3)}
+.qa-q .chev{flex-shrink:0;margin-top:1px;transition:transform .2s}
+.qa-item.open .qa-q .chev{transform:rotate(180deg)}
+.qa-a{padding:0 11px 11px 31px;font-size:12.5px;color:var(--txt-dim);line-height:1.6}
+
+/* two-column combined layout */
+.combined-head{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:10px;position:sticky;top:62px;z-index:20;background:rgba(12,15,21,.85);backdrop-filter:blur(10px);padding:6px 0;border-bottom:1px solid var(--line)}
+.combined-col-label{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:var(--txt-dim);letter-spacing:.02em}
+.combined{display:flex;flex-direction:column;gap:18px}
+.combined-row{display:flex;flex-direction:column;gap:6px}
+.combined-daylabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt-faint)}
+.combined-pair{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.combined-cell{min-width:0}
+.combined-cell .day{margin-bottom:0}
+.combined-rest{border:1.5px dashed var(--line-2);border-radius:var(--r);padding:18px;color:var(--txt-faint);font-size:12.5px;text-align:center;background:transparent}
+
+/* subjects progress strip (dashboard) */
+.subjects-panel{margin-bottom:22px}
+.subjects-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.subj-chip{background:var(--ink-3);border:1px solid var(--line);border-radius:11px;padding:13px 14px;display:flex;flex-direction:column;gap:8px}
+.subj-chip-top{display:flex;justify-content:space-between;align-items:baseline}
+.subj-chip-name{font-size:12.5px;font-weight:600;color:var(--txt)}
+.subj-chip-pct{font-size:13px;font-weight:700}
+.subj-chip-bar{height:7px;border-radius:5px;background:var(--ink);overflow:hidden}
+.subj-chip-bar i{display:block;height:100%;border-radius:5px;transition:width .5s}
+.subj-chip-count{font-size:10.5px;color:var(--txt-faint)}
+
+/* roadmap outline (stub subjects) */
+.roadmap{display:flex;flex-direction:column;gap:2px}
+.roadmap-row{display:flex;align-items:center;gap:14px;padding:11px 14px;border-radius:9px;border:1px solid var(--line);background:var(--ink-2);margin-bottom:8px}
+.roadmap-day{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt-faint);min-width:54px;flex-shrink:0}
+.roadmap-focus{flex:1;font-size:13.5px;font-weight:500;min-width:0}
+.roadmap-date{font-size:11px;color:var(--txt-faint);flex-shrink:0}
+
+@media(max-width:1000px){.subjects-strip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:860px){
+  .combined-head{display:none}
+  .combined-pair{grid-template-columns:1fr}
+  .subjects-strip{grid-template-columns:repeat(2,1fr)}
+}
 
 /* ---------- onboarding modal ---------- */
 .modal-overlay{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:20px;background:rgba(8,10,14,.72);backdrop-filter:blur(8px);animation:fade .3s ease}
